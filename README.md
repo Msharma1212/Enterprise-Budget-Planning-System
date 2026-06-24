@@ -1,20 +1,40 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Enterprise Budget Planning & Forecasting System
 
-# Run and deploy your AI Studio app
+An enterprise-grade Budget Planning and Financial Forecasting platform inspired by Oracle PBCS (Oracle Planning & Budgeting Cloud Service).
 
-This contains everything you need to run your app locally.
+The system enables organizations to manage departmental budgets, monitor actual expenses, streamline approval workflows, generate financial reports, and analyze business performance through interactive dashboards.
 
-View your app in AI Studio: https://ai.studio/apps/829b065f-0f0e-4ef6-9547-0727554e604a
+---
 
-## Run Locally
+## Features
 
-**Prerequisites:**  Node.js
+### Authentication & Authorization
 
+- Secure Login
+- Role-Based Access Control (RBAC)
+- Admin
+- CFO
+- Finance Manager
+- Department Manager
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+
+### Department Management
+
+- Department Directory
+- Department Heads
+- Budget Owners
+- Active / Inactive Status
+
+---
+
+### Budget Planning
+
+- Annual Budget
+- Quarterly Budget
+- Monthly Budget
+- Budget Allocation
+- Budget Revision
+
+---
+
