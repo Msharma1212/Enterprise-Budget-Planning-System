@@ -69,3 +69,50 @@ The system enables organizations to manage departmental budgets, monitor actual 
 
 ---
 
+### Reports
+
+- Budget Reports
+- Expense Reports
+- Department Reports
+- Financial Summary
+- Export to Excel
+- Export to PDF
+
+---
+
+### Notifications
+
+- Budget Approval Alerts
+- Budget Exceeded Alerts
+- Pending Approval Notifications
+
+---
+
+## Technology Stack
+
+### Frontend
+
+- React
+- TypeScript
+- Tailwind CSS
+- Vite
+
+### Backend
+
+- Node.js
+- Express.js
+
+### Database
+
+- MySQL
+
+### Authentication
+
+- JWT
+
+### Charts
+
+- Chart.js
+
+---
+
