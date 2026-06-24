@@ -116,3 +116,66 @@ The system enables organizations to manage departmental budgets, monitor actual 
 
 ---
 
+## Project Structure
+
+```
+enterprise-budget-planning-system/
+
+│
+├── client/
+├── server/
+├── database/
+├── docs/
+├── public/
+└── README.md
+```
+
+---
+
+## Screens
+
+- Login
+- Dashboard
+- Department Directory
+- Budget Planning
+- Expense Tracking
+- Approval Workflow
+- Reports
+- Analytics
+
+---
+
+## Business Workflow
+
+Department Manager
+
+↓
+
+Create Budget
+
+↓
+
+Finance Review
+
+↓
+
+CFO Approval
+
+↓
+
+Budget Released
+
+↓
+
+Expense Tracking
+
+↓
+
+Budget vs Actual Analysis
+
+↓
+
+Financial Reports
+
+---
+
