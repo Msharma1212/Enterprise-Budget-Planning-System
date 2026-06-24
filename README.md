@@ -38,3 +38,34 @@ The system enables organizations to manage departmental budgets, monitor actual 
 
 ---
 
+### Expense Management
+
+- Record Expenses
+- Expense Categories
+- Budget vs Actual
+- Remaining Budget
+- Overspending Alerts
+
+---
+
+### Approval Workflow
+
+- Department Submission
+- Finance Review
+- CFO Approval
+- Approval History
+- Audit Trail
+
+---
+
+### Financial Dashboard
+
+- Budget Overview
+- Expense Analysis
+- Department Comparison
+- Budget Utilization
+- KPIs
+- Interactive Charts
+
+---
+
