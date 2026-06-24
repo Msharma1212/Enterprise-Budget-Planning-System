@@ -179,3 +179,38 @@ Financial Reports
 
 ---
 
+## Database Modules
+
+- Users
+- Departments
+- Budgets
+- Expenses
+- Approvals
+- Notifications
+- Reports
+- Audit Logs
+
+---
+
+## Future Enhancements
+
+- AI Budget Forecasting
+- ERP Integration
+- Email Notifications
+- Predictive Analytics
+- Power BI Integration
+- Oracle ERP Integration
+
+---
+
+## Project Objective
+
+The objective of this project is to simulate an enterprise-level budgeting and financial planning solution similar to Oracle PBCS. It demonstrates concepts such as budget planning, approval workflows, financial reporting, expense tracking, and role-based access management commonly used in large organizations.
+
+---
+
+## Developed By
+
+**Mayank Sharma**
+
+Enterprise Budget Planning & Forecasting System
