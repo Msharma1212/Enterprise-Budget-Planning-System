@@ -87,3 +87,27 @@ app.post("/api/budgets", (req: Request, res: Response) => {
     res.status(400).json({ error: error.message });
   }
 });
+app.post("/api/budgets/workflow", (req: Request, res: Response) => {
+  try {
+    const { budgetId, status, userId, username, userRole, comment } = req.body;
+    const updated = dbService.updateBudgetWorkflow(budgetId, status, userId, username, userRole, comment);
+    res.json({ success: true, budget: updated });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// API: Expenses
+app.get("/api/expenses", (req: Request, res: Response) => {
+  res.json(dbService.getExpenses());
+});
+
+app.post("/api/expenses", (req: Request, res: Response) => {
+  try {
+    const { expense, userId, username, userRole } = req.body;
+    const result = dbService.addExpense(expense, userId, username, userRole);
+    res.json({ success: true, ...result });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+});
