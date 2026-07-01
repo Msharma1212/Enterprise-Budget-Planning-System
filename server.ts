@@ -67,3 +67,23 @@ app.post("/api/auth/login", (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// API: Departments
+app.get("/api/departments", (req: Request, res: Response) => {
+  res.json(dbService.getDepartments());
+});
+
+// API: Budgets
+app.get("/api/budgets", (req: Request, res: Response) => {
+  res.json(dbService.getBudgets());
+});
+
+app.post("/api/budgets", (req: Request, res: Response) => {
+  try {
+    const { budget, userId, username, userRole } = req.body;
+    const saved = dbService.saveBudget(budget, userId, username, userRole);
+    res.json({ success: true, budget: saved });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+});
