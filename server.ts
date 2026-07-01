@@ -48,3 +48,22 @@ app.use("/api/v1/notifications", notificationRouter);
 // API: V1 Compliance Audits Router
 app.use("/api/v1/audits", auditRouter);
 
+// API: Auth / Login
+app.post("/api/auth/login", (req: Request, res: Response) => {
+  try {
+    const { username } = req.body;
+    if (!username) {
+      res.status(400).json({ error: "Username is required" });
+      return;
+    }
+    const user = dbService.authenticateUser(username);
+    if (!user) {
+      res.status(401).json({ error: "Enterprise user credentials not found in directory. Use admin.orcl, finance.orcl, it.orcl, rd.orcl, or mktg.orcl" });
+      return;
+    }
+    dbService.addAudit(user.id, user.username, user.role, "USER_LOGIN", `Logged in to Oracle Cloud Planning from ${req.ip}`);
+    res.json({ user });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
