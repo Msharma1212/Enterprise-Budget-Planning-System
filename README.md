@@ -1,4 +1,3 @@
-# work on progress - This project is not completed (Project coming soon)
 # Enterprise Budget Planning & Forecasting System
 
 An enterprise-grade Budget Planning and Financial Forecasting platform inspired by Oracle PBCS (Oracle Planning & Budgeting Cloud Service).
