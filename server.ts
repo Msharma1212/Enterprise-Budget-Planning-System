@@ -168,3 +168,23 @@ app.post("/api/forecast", async (req: Request, res: Response) => {
   } catch (flaskError: any) {
     console.log("Python Scikit-Learn server offline or timed out, rolling back to Layer 2 (Gemini AI). Error:", flaskError.message);
   }
+
+  // Layer 2: Gemini API Forecast
+  try {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey.trim() === "") {
+      const forecast = calculateHeuristicForecast();
+      res.json({ forecast });
+      return;
+    }
+
+    // Lazy initialization of Gemini client
+    const ai = new GoogleGenAI({
+      apiKey: apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
+      
