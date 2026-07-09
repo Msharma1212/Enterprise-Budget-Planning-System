@@ -150,3 +150,21 @@ app.post("/api/forecast", async (req: Request, res: Response) => {
       isDemo: true
     };
   };
+
+         // Layer 1: Python Scikit-Learn Flask Predictor
+  try {
+    console.log(`Forwarding modeling request to Python Flask server on http://127.0.0.1:5000/predict for department ${departmentId}`);
+    const flaskResponse = await axios.post("http://127.0.0.1:5000/predict", {
+      departmentId,
+      targetCategory: targetCategory || "All Categories",
+      growthSliderValue: growthSliderValue || 8
+    }, { timeout: 4000 }); // 4 seconds timeout limit for local python
+    
+    if (flaskResponse.data && flaskResponse.data.success) {
+      console.log("Forecast successfully computed by Python Scikit-Learn Engine.");
+      res.json({ forecast: flaskResponse.data.forecast });
+      return;
+    }
+  } catch (flaskError: any) {
+    console.log("Python Scikit-Learn server offline or timed out, rolling back to Layer 2 (Gemini AI). Error:", flaskError.message);
+  }
