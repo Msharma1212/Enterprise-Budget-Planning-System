@@ -111,3 +111,12 @@ app.post("/api/expenses", (req: Request, res: Response) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+// API: Audit & Workflow Logs
+app.get("/api/audit-logs", (req: Request, res: Response) => {
+  res.json(dbService.getAuditLogs());
+});
+
+app.get("/api/workflow-logs", (req: Request, res: Response) => {
+  res.json(dbService.getWorkflowLogs());
+});
