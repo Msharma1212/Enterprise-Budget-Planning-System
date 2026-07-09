@@ -202,3 +202,28 @@ Your output must be returned strictly as a JSON object adhering to this schema:
   "recommendations": ["string", "string", ... (at least 3 actionable financial budget optimization recommendations)],
   "risks": ["string", "string", ... (at least 2 key macro or structural budgetary risks identified)]
 }`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            forecastAmount: { type: Type.INTEGER },
+            confidenceScore: { type: Type.INTEGER },
+            trendAnalysis: { type: Type.STRING },
+            recommendations: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING }
+            },
+            risks: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING }
+            }
+          },
+          required: ["forecastAmount", "confidenceScore", "trendAnalysis", "recommendations", "risks"]
+        }
+      }
+    });
