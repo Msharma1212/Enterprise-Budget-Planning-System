@@ -227,3 +227,12 @@ Your output must be returned strictly as a JSON object adhering to this schema:
         }
       }
     });
+   const text = response.text;
+    if (text) {
+      const forecast = JSON.parse(text);
+      res.json({ forecast });
+    } else {
+      res.json({ forecast: calculateHeuristicForecast() });
+    }
+  } catch (error: any) {
+    console.error("Gemini API call failed, falling back to Layer 3 (heuristic forecasting):", error.message);
