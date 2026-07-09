@@ -120,3 +120,33 @@ app.get("/api/audit-logs", (req: Request, res: Response) => {
 app.get("/api/workflow-logs", (req: Request, res: Response) => {
   res.json(dbService.getWorkflowLogs());
 });
+
+// API: AI Forecasting
+app.post("/api/forecast", async (req: Request, res: Response) => {
+  const { departmentId, historicalBudget, historicalActuals, targetCategory, growthSliderValue } = req.body;
+  
+  // Standard high-quality fallback heuristic forecasting
+  const calculateHeuristicForecast = () => {
+    const budgetSum = historicalBudget || 1000000;
+    const actualSum = historicalActuals || 900000;
+    const ratio = actualSum / (budgetSum || 1);
+    
+    const forecastAmount = Math.round(actualSum * 1.08); // 8% growth projection
+    const confidenceScore = Math.min(Math.max(Math.round((1 - Math.abs(1 - ratio)) * 100), 65), 95);
+    
+    return {
+      forecastAmount,
+      confidenceScore,
+      trendAnalysis: `Heuristic Analysis: Based on actual historical spending of $${actualSum.toLocaleString()} vs. budget plans of $${budgetSum.toLocaleString()} (${Math.round(ratio * 100)}% utilization), the projected baseline for the upcoming fiscal period is estimated with an 8% structural adjustment.`,
+      recommendations: [
+        `Prioritize category allocation targets based on historical high utilization rates.`,
+        `Implement tight variance controls on discretionary travel and hardware line items.`,
+        `Formulate a quarterly contingency buffer of 5% of total budget to absorb seasonal run rates.`
+      ],
+      risks: [
+        `Volatility in software renewal licensing cycles during Q3.`,
+        `Unanticipated staffing ramp up in operational support functions.`
+      ],
+      isDemo: true
+    };
+  };
