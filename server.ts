@@ -188,3 +188,17 @@ app.post("/api/forecast", async (req: Request, res: Response) => {
       }
     });
       
+   const prompt = `You are a Senior Oracle PBCS Financial Planning & Forecasting Specialist.
+Analyze the following financial records for Department ID "${departmentId}" under the target planning category "${targetCategory || 'All Categories'}":
+- Historical Planned Budget: $${(historicalBudget || 0).toLocaleString()}
+- Historical Actual Spending: $${(historicalActuals || 0).toLocaleString()}
+
+Based on this historical data, generate a high-precision forecasting model for the NEXT fiscal year.
+Your output must be returned strictly as a JSON object adhering to this schema:
+{
+  "forecastAmount": number (the projected total budget amount for next year),
+  "confidenceScore": number (percentage between 0 and 100, indicating data confidence),
+  "trendAnalysis": "string (a professional, detailed enterprise level explanation of spending variance, run-rates, and projections)",
+  "recommendations": ["string", "string", ... (at least 3 actionable financial budget optimization recommendations)],
+  "risks": ["string", "string", ... (at least 2 key macro or structural budgetary risks identified)]
+}`;
