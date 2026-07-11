@@ -315,3 +315,49 @@ app.post("/api/financial-assistant", async (req: Request, res: Response) => {
         }
         return responseText;
       }
+
+      // Q2: Monthly Summary
+      if (q.includes("monthly") || q.includes("summary") || q.includes("months")) {
+        let responseText = "### 🗓️ Corporate Expense Monthly Summary\n\n";
+        responseText += "Here is the compiled baseline actual spend trend across all departments and spending categories:\n\n";
+
+        // Group expenses by month
+        const monthlySpent: { [month: string]: number } = {};
+        expenses.forEach(e => {
+          // Date is in YYYY-MM-DD
+          const monthParts = e.date.split("-");
+          if (monthParts.length >= 2) {
+            const monthNum = parseInt(monthParts[1]);
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const monthName = monthNames[monthNum - 1] || "Other";
+            monthlySpent[monthName] = (monthlySpent[monthName] || 0) + e.amount;
+          }
+        });
+
+        let tableLines = "| Month | Total Actual Spend | Representative Transactions | Key Category |\n";
+        tableLines += "|---|---|---|---|\n";
+
+        Object.keys(monthlySpent).forEach(month => {
+          const totalAmt = monthlySpent[month];
+          const monthExpenses = expenses.filter(e => {
+            const monthParts = e.date.split("-");
+            if (monthParts.length >= 2) {
+              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              return monthNames[parseInt(monthParts[1]) - 1] === month;
+            }
+            return false;
+          });
+          const categories = monthExpenses.map(me => me.category);
+          // Find most frequent category
+          const keyCategory = categories.sort((a,b) =>
+            categories.filter(v => v===a).length - categories.filter(v => v===b).length
+          ).pop() || "General Ops";
+
+          tableLines += `| **${month}** | $${totalAmt.toLocaleString()} | ${monthExpenses.length} transactions | \`${keyCategory}\` |\n`;
+        });
+
+        responseText += tableLines + "\n";
+        const grandTotal = expenses.reduce((sum, e) => sum + e.amount, 0);
+        responseText += `* **Grand Total Actual Expenditures:** $${grandTotal.toLocaleString()} across ${expenses.length} postings.`;
+        return responseText;
+      }
