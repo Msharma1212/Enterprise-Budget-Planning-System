@@ -381,3 +381,61 @@ app.post("/api/financial-assistant", async (req: Request, res: Response) => {
         responseText += "💡 *Recommendation:* Lock in technology subscriptions early to reduce variance before the projected run-rates manifest.";
         return responseText;
       }
+
+      // Q4: Budget Variance
+      if (q.includes("variance") || q.includes("explain") || q.includes("diff")) {
+        let responseText = "### ⚖️ Variance Analysis & Budget Reconciliation\n\n";
+        responseText += "Below is the breakdown of variance metrics (Approved Budget vs. Actual Expenses) by Org Unit:\n\n";
+
+        let tableLines = "| Org Unit | Approved Budget | Actual Spent | Variance Amount | Status |\n";
+        tableLines += "|---|---|---|---|---|\n";
+
+        departments.forEach(dept => {
+          const deptBudget = budgets.find(b => b.departmentId === dept.id && b.status === "Approved");
+          const deptExpenses = expenses.filter(e => e.departmentId === dept.id);
+          const totalSpent = deptExpenses.reduce((sum, e) => sum + e.amount, 0);
+          
+          if (deptBudget) {
+            const budgetAmt = deptBudget.totalAmount;
+            const variance = budgetAmt - totalSpent;
+            const statusStr = variance >= 0 ? "🟢 Under Budget" : "🔴 Over Budget";
+            tableLines += `| **${dept.name}** | $${budgetAmt.toLocaleString()} | $${totalSpent.toLocaleString()} | $${variance.toLocaleString()} | ${statusStr} |\n`;
+          }
+        });
+
+        responseText += tableLines + "\n";
+        responseText += "**Reconciliation Summary:** Variance clusters primarily around tech stack renewals and unbudgeted software acquisitions. Review active departmental line-items.";
+        return responseText;
+      }
+
+      return null;
+    };
+
+    // If a standard deterministic query was matched, check if we should still run Gemini or blend
+    const localAnswer = computeLocalAnswer(message);
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey.trim() === "") {
+      // No valid Gemini key, return the deterministic live-data computed local answer
+      if (localAnswer) {
+        res.json({ text: localAnswer });
+      } else {
+        res.json({ 
+          text: `### 🤖 AI Financial Assistant (Offline Mode)
+
+Hello! The server is currently operating with a local analytics engine. I can answer:
+- **"Which department exceeded budget?"**
+- **"Generate monthly summary."**
+- **"Predict next quarter."**
+- **"Explain budget variance."**
+
+Please enter one of those questions above, or add a valid \`GEMINI_API_KEY\` in **Settings > Secrets** to enable open-ended natural language conversations!
+
+**Live Ledger Metadata:**
+- Departments: ${departments.length} registered
+- Budgets: ${budgets.length} total (${budgets.filter(b => b.status === "Approved").length} approved)
+- Actual Expenses: ${expenses.length} posted` 
+        });
+      }
+      return;
+    }      
