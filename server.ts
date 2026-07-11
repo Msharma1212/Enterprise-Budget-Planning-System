@@ -259,3 +259,12 @@ Your output must be returned strictly as a JSON object adhering to this schema:
     });
   }
 });
+
+// API: AI Financial Assistant
+app.post("/api/financial-assistant", async (req: Request, res: Response) => {
+  try {
+    const { message, history = [] } = req.body;
+    if (!message) {
+      res.status(400).json({ error: "Message is required" });
+      return;
+    }
