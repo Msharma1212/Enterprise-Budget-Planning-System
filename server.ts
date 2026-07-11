@@ -236,3 +236,26 @@ Your output must be returned strictly as a JSON object adhering to this schema:
     }
   } catch (error: any) {
     console.error("Gemini API call failed, falling back to Layer 3 (heuristic forecasting):", error.message);
+
+      // Return heuristic so app remains robust
+    const budgetSum = historicalBudget || 1000000;
+    const actualSum = historicalActuals || 900000;
+    const forecastAmount = Math.round(actualSum * 1.08);
+    res.json({
+      forecast: {
+        forecastAmount,
+        confidenceScore: 78,
+        trendAnalysis: `Heuristic Backup Analysis (All APIs Offline): Spent $${actualSum.toLocaleString()} vs $${budgetSum.toLocaleString()} planned. Projecting baseline spending index adjustment of 8% for the future fiscal cycles.`,
+        recommendations: [
+          "Re-align fixed capital expenses to Q1 to avoid mid-year variance inflation.",
+          "Cap promotional campaign allocations at 35% of total budget."
+        ],
+        risks: [
+          "Potential structural inflation on international operations.",
+          "Talent retention salary adjustments in technical divisions."
+        ],
+        isDemo: true
+      }
+    });
+  }
+});
