@@ -277,3 +277,41 @@ app.post("/api/financial-assistant", async (req: Request, res: Response) => {
     // Helper to run deterministic local rule-based answers (perfect fallback or fast responder)
     const computeLocalAnswer = (query: string): string | null => {
       const q = query.toLowerCase();
+
+      // Q1: Exceeded budget
+      if (q.includes("exceed") || q.includes("over budget") || q.includes("exceeded")) {
+        let responseText = "### 📊 Enterprise Budget Exceedance Audit\n\n";
+        responseText += "I have analyzed the current active general ledger and cross-referenced approved budgets against actual recorded expenses:\n\n";
+        
+        let exceededCount = 0;
+        let tableLines = "| Department Code | Department Name | Approved Budget | Actual Expenses | Overrun Variance | % Over |\n";
+        tableLines += "|---|---|---|---|---|---|\n";
+
+        departments.forEach(dept => {
+          const deptBudget = budgets.find(b => b.departmentId === dept.id && b.status === "Approved");
+          const deptExpenses = expenses.filter(e => e.departmentId === dept.id);
+          const totalSpent = deptExpenses.reduce((sum, e) => sum + e.amount, 0);
+
+          if (deptBudget) {
+            const budgetAmt = deptBudget.totalAmount;
+            if (totalSpent > budgetAmt) {
+              exceededCount++;
+              const diff = totalSpent - budgetAmt;
+              const pct = ((diff / budgetAmt) * 100).toFixed(1);
+              tableLines += `| **${dept.code}** | ${dept.name} | $${budgetAmt.toLocaleString()} | $${totalSpent.toLocaleString()} | **+$${diff.toLocaleString()}** | \`${pct}%\` |\n`;
+            }
+          }
+        });
+
+        if (exceededCount > 0) {
+          responseText += tableLines + "\n";
+          responseText += `**Findings:** We detected **${exceededCount} department(s)** exceeding their approved fiscal parameters. \n\n`;
+          responseText += "**Actionable Recommendations:**\n";
+          responseText += "1. **Freeze discretionary spending** immediately in the affected units.\n";
+          responseText += "2. **Initiate an automated variance workflow review** to investigate transaction logs.\n";
+          responseText += "3. **Adjust the category breakdown allocation limits** on the Planning Grid.\n";
+        } else {
+          responseText += "✨ **All departments are currently operating within their approved budget thresholds!** No overrun parameters detected across any cost center nodes.";
+        }
+        return responseText;
+      }
