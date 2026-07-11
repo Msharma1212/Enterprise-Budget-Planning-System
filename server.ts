@@ -268,3 +268,12 @@ app.post("/api/financial-assistant", async (req: Request, res: Response) => {
       res.status(400).json({ error: "Message is required" });
       return;
     }
+
+    // Retrieve fresh data from live EPM ledger
+    const departments = dbService.getDepartments();
+    const budgets = dbService.getBudgets();
+    const expenses = dbService.getExpenses();
+
+    // Helper to run deterministic local rule-based answers (perfect fallback or fast responder)
+    const computeLocalAnswer = (query: string): string | null => {
+      const q = query.toLowerCase();
