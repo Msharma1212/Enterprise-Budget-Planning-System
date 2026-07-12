@@ -450,3 +450,6 @@ Please enter one of those questions above, or add a valid \`GEMINI_API_KEY\` in 
       }
     });
 
+    // Structure prompt with live context
+    const systemInstruction = `You are a Senior Oracle PBCS Financial Planning Specialist and AI Financial Assistant.
+You have real-time access to the active corporate general ledger data. Your objective is to assist administrators, finance managers, and department managers in understanding, analyzing, and forecasting company finances.
