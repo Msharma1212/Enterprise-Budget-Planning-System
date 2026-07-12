@@ -478,3 +478,9 @@ Style & Output:
 - If the user asks general questions, be helpful and relate it to our EPM platform.
 - Never make up information that cannot be backed by the provided dataset.
 `;
+
+    // Map history to standard Gemini structure
+    const contents = history.map((h: any) => ({
+      role: h.role === "user" ? "user" : "model",
+      parts: [{ text: h.text }]
+    }));
