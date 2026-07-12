@@ -439,3 +439,14 @@ Please enter one of those questions above, or add a valid \`GEMINI_API_KEY\` in 
       }
       return;
     }      
+
+    // Initialize Gemini with API Key
+    const ai = new GoogleGenAI({
+      apiKey: apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
+
