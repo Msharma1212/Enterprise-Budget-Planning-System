@@ -484,3 +484,9 @@ Style & Output:
       role: h.role === "user" ? "user" : "model",
       parts: [{ text: h.text }]
     }));
+
+    // Append current prompt
+    contents.push({
+      role: "user",
+      parts: [{ text: message }]
+    });
