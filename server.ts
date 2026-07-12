@@ -490,3 +490,12 @@ Style & Output:
       role: "user",
       parts: [{ text: message }]
     });
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash",
+      contents: contents,
+      config: {
+        systemInstruction: systemInstruction,
+        temperature: 0.2
+      }
+    });
