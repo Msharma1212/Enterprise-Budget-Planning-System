@@ -530,3 +530,13 @@ async function startServer() {
     pythonProc.on("close", (code) => {
       console.log(`[Flask Process] Closed with exit code ${code}`);
     });
+
+  } catch (error: any) {
+    console.error("Failed to verify/launch Python forecasting backend. Fallback prediction will be used. Error:", error.message);
+  }
+
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
