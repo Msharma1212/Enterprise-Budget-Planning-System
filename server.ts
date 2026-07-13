@@ -522,3 +522,11 @@ async function startServer() {
     pythonProc.stdout.on("data", (data) => {
       console.log(`[Flask STDOUT]: ${data.toString().trim()}`);
     });
+
+    pythonProc.stderr.on("data", (data) => {
+      console.warn(`[Flask STDERR]: ${data.toString().trim()}`);
+    });
+    
+    pythonProc.on("close", (code) => {
+      console.log(`[Flask Process] Closed with exit code ${code}`);
+    });
