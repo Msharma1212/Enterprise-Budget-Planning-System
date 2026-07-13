@@ -48,6 +48,7 @@ app.use("/api/v1/notifications", notificationRouter);
 // API: V1 Compliance Audits Router
 app.use("/api/v1/audits", auditRouter);
 
+
 // API: Auth / Login
 app.post("/api/auth/login", (req: Request, res: Response) => {
   try {
@@ -87,6 +88,7 @@ app.post("/api/budgets", (req: Request, res: Response) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 app.post("/api/budgets/workflow", (req: Request, res: Response) => {
   try {
     const { budgetId, status, userId, username, userRole, comment } = req.body;
@@ -151,7 +153,7 @@ app.post("/api/forecast", async (req: Request, res: Response) => {
     };
   };
 
-         // Layer 1: Python Scikit-Learn Flask Predictor
+  // Layer 1: Python Scikit-Learn Flask Predictor
   try {
     console.log(`Forwarding modeling request to Python Flask server on http://127.0.0.1:5000/predict for department ${departmentId}`);
     const flaskResponse = await axios.post("http://127.0.0.1:5000/predict", {
@@ -187,8 +189,8 @@ app.post("/api/forecast", async (req: Request, res: Response) => {
         }
       }
     });
-      
-   const prompt = `You are a Senior Oracle PBCS Financial Planning & Forecasting Specialist.
+
+    const prompt = `You are a Senior Oracle PBCS Financial Planning & Forecasting Specialist.
 Analyze the following financial records for Department ID "${departmentId}" under the target planning category "${targetCategory || 'All Categories'}":
 - Historical Planned Budget: $${(historicalBudget || 0).toLocaleString()}
 - Historical Actual Spending: $${(historicalActuals || 0).toLocaleString()}
@@ -227,7 +229,8 @@ Your output must be returned strictly as a JSON object adhering to this schema:
         }
       }
     });
-   const text = response.text;
+
+    const text = response.text;
     if (text) {
       const forecast = JSON.parse(text);
       res.json({ forecast });
@@ -236,8 +239,7 @@ Your output must be returned strictly as a JSON object adhering to this schema:
     }
   } catch (error: any) {
     console.error("Gemini API call failed, falling back to Layer 3 (heuristic forecasting):", error.message);
-
-      // Return heuristic so app remains robust
+    // Return heuristic so app remains robust
     const budgetSum = historicalBudget || 1000000;
     const actualSum = historicalActuals || 900000;
     const forecastAmount = Math.round(actualSum * 1.08);
@@ -438,7 +440,7 @@ Please enter one of those questions above, or add a valid \`GEMINI_API_KEY\` in 
         });
       }
       return;
-    }      
+    }
 
     // Initialize Gemini with API Key
     const ai = new GoogleGenAI({
@@ -484,7 +486,7 @@ Style & Output:
       role: h.role === "user" ? "user" : "model",
       parts: [{ text: h.text }]
     }));
-
+    
     // Append current prompt
     contents.push({
       role: "user",
@@ -522,7 +524,7 @@ async function startServer() {
     pythonProc.stdout.on("data", (data) => {
       console.log(`[Flask STDOUT]: ${data.toString().trim()}`);
     });
-
+    
     pythonProc.stderr.on("data", (data) => {
       console.warn(`[Flask STDERR]: ${data.toString().trim()}`);
     });
@@ -530,7 +532,7 @@ async function startServer() {
     pythonProc.on("close", (code) => {
       console.log(`[Flask Process] Closed with exit code ${code}`);
     });
-
+    
   } catch (error: any) {
     console.error("Failed to verify/launch Python forecasting backend. Fallback prediction will be used. Error:", error.message);
   }
@@ -540,7 +542,7 @@ async function startServer() {
       server: { middlewareMode: true },
       appType: "spa",
     });
-        app.use(vite.middlewares);
+    app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
@@ -548,7 +550,8 @@ async function startServer() {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }
-    app.listen(PORT, "0.0.0.0", () => {
+
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(`Oracle PBCS Cloud Server running on http://localhost:${PORT}`);
   });
 }
