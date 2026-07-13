@@ -507,3 +507,9 @@ Style & Output:
     res.status(500).json({ error: "Failed to generate AI assistant response: " + err.message });
   }
 });
+
+// Vite Integration Middleware
+async function startServer() {
+  // Install Python packages if missing and spawn Flask server
+  try {
+    console.log("Checking and installing Python dependencies (flask, pandas, scikit-learn, numpy)...");
