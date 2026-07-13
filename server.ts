@@ -499,3 +499,11 @@ Style & Output:
         temperature: 0.2
       }
     });
+
+    res.json({ text: response.text || "No response received from model." });
+
+  } catch (err: any) {
+    console.error("AI Assistant Endpoint failure:", err);
+    res.status(500).json({ error: "Failed to generate AI assistant response: " + err.message });
+  }
+});
