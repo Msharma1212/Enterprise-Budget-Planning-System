@@ -513,3 +513,12 @@ async function startServer() {
   // Install Python packages if missing and spawn Flask server
   try {
     console.log("Checking and installing Python dependencies (flask, pandas, scikit-learn, numpy)...");
+    execSync("pip3 install flask pandas scikit-learn numpy --quiet || pip install flask pandas scikit-learn numpy --quiet", { stdio: "inherit" });
+    console.log("Python dependencies verified successfully.");
+    
+    console.log("Spawning Python Flask forecasting microservice...");
+    const pythonProc = spawn("python3", ["forecast_server.py"]);
+    
+    pythonProc.stdout.on("data", (data) => {
+      console.log(`[Flask STDOUT]: ${data.toString().trim()}`);
+    });
